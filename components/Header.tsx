@@ -5,7 +5,12 @@ import {twMerge} from "tailwind-merge"
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import {HiHome} from "react-icons/hi"
 import { BiSearch } from "react-icons/bi";
+
+import useAuthModal from "@/hooks/useAuthModal";
+import { useUser } from "@/hooks/useUser";
+
 import Button from "./Button"
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 interface HeaderProps{
   children: React.ReactNode;
@@ -16,10 +21,20 @@ const Header: React.FC<HeaderProps> =({
   children,
   className
 })=>{
-  const router = useRouter
+  const authModal = useAuthModal();
+  const router = useRouter();
 
-  const handleLogout= () =>{
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+  
+  const handleLogout = async () => {
+    const { error } = await supabaseClient.auth.signOut();
+    player.reset();
+    router.refresh();
 
+    if (error) {
+      toast.error(error.message);
+    }
   }
   return (
     <div
@@ -108,7 +123,7 @@ const Header: React.FC<HeaderProps> =({
               <>
               <div>
                <Button
-               onClick={()=>{}}
+               onClick={authModal.onOpen}
                 className="
                 bg-transparent
                 text-neutral-300
@@ -120,14 +135,14 @@ const Header: React.FC<HeaderProps> =({
                 </div>  
                  <div>
                <Button
-               onClick={()=>{}}
+                 onClick={authModal.onOpen} 
                 className="
                 bg-white
                px-6
                py-2
                 "
                >
-                  Sign up
+                 Log in
                 </Button>
                 </div>
               </>
