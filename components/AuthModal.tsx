@@ -14,31 +14,31 @@ import useAuthModal from "@/hooks/useAuthModal";
 import Modal from './Modal';
 
 const AuthModal = () => {
-  const { session } = useSessionContext();
-  const router = useRouter();
-  const { onClose, isOpen } = useAuthModal();
-  
   const supabaseClient = useSupabaseClient();
+  const router = useRouter();
+  const { session } = useSessionContext();
+  const { onClose, isOpen } = useAuthModal();
 
-  useEffect(() => {
-    if (session) {
+  useEffect(()=>{
+    if(session){
       router.refresh();
       onClose();
     }
-  }, [session, router, onClose]);
+  },[session,router,onClose]);
 
-  const onChange = (open: boolean) => {
-    if (!open) {
+  const onChange= (open:boolean) => {
+    if(!open){
       onClose();
     }
   }
+
 
   return (
     <Modal
     title="Welcome back"
     description="login to your account"
     isOpen={isOpen}
-    onChange={()=> {}}
+    onChange={onChange}
     >
       <Auth
       theme="dark"
