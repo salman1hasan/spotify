@@ -1,14 +1,16 @@
-"use client"
+"use client";
+
+import Image from "next/image";
 
 import useLoadImage from "@/hooks/useLoadImage";
-import {Song} from "@/types";
-import Image from "next/image"
+import { Song } from "@/types";
 
-interface SongItemProps{
-  data:Song;
-  onClick: (id:string)=> void
+import PlayButton from "./PlayButton";
+
+interface SongItemProps {
+  data: Song;
+  onClick: (id: string) => void;
 }
-
 
 const SongItem: React.FC<SongItemProps> = ({
   data,
@@ -36,7 +38,7 @@ const SongItem: React.FC<SongItemProps> = ({
         p-3
       "
     >
-       <div 
+      <div 
         className="
           relative 
           aspect-square 
@@ -45,15 +47,41 @@ const SongItem: React.FC<SongItemProps> = ({
           rounded-md 
           overflow-hidden
         "
-      ></div>
-     <Image
+      >
+        <Image
           className="object-cover"
           src={imagePath || '/images/music-placeholder.png'}
           fill
           alt="Image"
         />
+      </div>
+      <div className="flex flex-col items-start w-full pt-4 gap-y-1">
+        <p className="font-semibold truncate w-full">
+          {data.title}
+        </p>
+        <p 
+          className="
+            text-neutral-400 
+            text-sm 
+            pb-4 
+            w-full 
+            truncate
+          "
+        >
+          By {data.author}
+        </p>
+      </div>
+      <div 
+        className="
+          absolute 
+          bottom-24 
+          right-5
+        "
+      >
+        <PlayButton />
+      </div>
     </div>
-  );
+   );
 }
-
+ 
 export default SongItem;
